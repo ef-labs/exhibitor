@@ -509,7 +509,7 @@ fieldset
     margin-bottom: 6px;
 }
 
-#analyze-help, #usage-listing-help
+#analyze-help, #usage-listing-help, #export-help, #import-help
 {
     font-size: .75em;
     border: solid 1px #a9a9a9;
@@ -548,6 +548,18 @@ fieldset
 {
     float: left;
     width: 125px;
+}
+
+#get-export-dialog label
+{
+    float: left;
+    width: 125px;
+}
+
+#import-dialog label
+{
+    float: left;
+    width: 135px;
 }
 
 #standalone-mode-message

@@ -54,6 +54,14 @@ function performUsageListing()
     window.open("loading.html?method=usage-listing&json=" + encodeURIComponent(json), "_blank", "status=0,toolbar=0,location=0,menubar=0,directories=0,width=500,height=300");
 }
 
+function performExport()
+{
+    var request = {};
+    request.startPath = $('#export-path').val();
+    var json = JSON.stringify(request);
+    window.open("loading.html?method=export&json=" + encodeURIComponent(json), "_blank", "status=0,toolbar=0,location=0,menubar=0,directories=0,width=500,height=300");
+}
+
 function performAnalyze()
 {
     var requestTab = buildRequestData();
@@ -77,6 +85,24 @@ function openUsageListingDialog(path)
         }
     );
     $("#get-usage-listing-dialog").dialog("open");
+}
+
+function openExportDialog(path)
+{
+    $('#export-path').val(path);
+    var getExportDialog = $("#get-export-dialog");
+
+    getExportDialog.dialog("option", "buttons", {
+        "Cancel": function(){
+            $(this).dialog("close");
+        },
+
+        "OK": function(){
+            $(this).dialog("close");
+            performExport();
+        }
+    });
+    getExportDialog.dialog("open");
 }
 
 function openAnalyzeDialog(path)
@@ -199,6 +225,24 @@ function initExplorer()
         return false;
     });
 
+    $("#explorer-button-export").button({
+        icons:{
+            primary:"ui-icon-gear"
+        }
+    }).click(function(){
+        openExportDialog(explorerSelectedPath);
+        return false;
+    });
+
+    $("#explorer-button-import").button({
+        icons:{
+            primary:"ui-icon-gear"
+        }
+    }).click(function(){
+        window.open("import.html", "_blank", "status=0,toolbar=0,location=0,menubar=0,directories=0,width=514,height=393");
+        return false;
+    });
+
     $("#analyze-dialog").dialog({
         modal: true,
         autoOpen: false,
@@ -233,6 +277,14 @@ function initExplorer()
         width: 500,
         resizable: false,
         title: 'Usage Listing'
+    });
+
+    $('#get-export-dialog').dialog({
+        modal: true,
+        autoOpen: false,
+        width: 500,
+        resizable: false,
+        title: 'Export'
     });
 }
 

@@ -121,6 +121,8 @@
                     <button id="explorer-button-modify">Modify...</button>
                     <button id="explorer-button-analyze">Analyze...</button>
                     <button id="explorer-button-usage-listing">Usage Listing...</button>
+                    <button id="explorer-button-export">Export...</button>
+                    <button id="explorer-button-import">Import...</button>
                 </div>
             </div>
 
@@ -400,6 +402,17 @@
             <div id="usage-listing-help">
                 Enter a starting path for the listing and the maximum size path for traversal (i.e. paths with Max Traversal children will not be recursively listed). A detailed listing
                 will be generated showing all the paths, their creation time, their immediate children count and their deep children count.
+            </div>
+        </div>
+
+        <div id="get-export-dialog" class="ui-helper-hidden">
+            <div>
+                <label for="export-path">Starting Path </label><input type="text" id="export-path" name="export-path" size="40" title="The starting path for the export"/><br clear="all"/>
+            </div>
+
+            <div id="export-help">
+                Enter a starting path for where you wish the export to begin. The export will then traverse through all of the children of that
+                path.
             </div>
         </div>
 

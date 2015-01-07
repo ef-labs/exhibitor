@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Loading...</title>
+
+        <link rel="stylesheet" type="text/css" href="css/exhibitor.css">
+
+        <style type="text/css">
+            body
+            {
+                background-color: #fff;
+            }
+
+            #codeblock
+            {
+                white-space: pre-wrap;
+                background-color: #eeeeee;
+            }
+
+            .ui-helper-hidden
+            {
+                display: none;
+            }
+        </style>
+
+        <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery.tools.min.js"></script>
+    </head>
+
+    <script type="text/javascript">
+        function closeWindow() {
+            this.window.close();
+        }
+
+        function submitForm() {
+            var formdata = new FormData($('#import-form')[0]);
+
+            $.ajax({
+                url: '/exhibitor/v1/import',
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                data: formdata,
+                statusCode: {
+                    200: function() {
+                        $("#import-complete").removeClass("ui-helper-hidden");
+                        $('#import-form').hide();
+                    },
+                    400: function() {
+                        $("#error-response").removeClass("ui-helper-hidden");
+                        $('#error-text').text('Bad Request!');
+                    },
+                    500: function(data, error, errorThrown) {
+                        $("#error-response").removeClass("ui-helper-hidden");
+                        $("#error-text").text(error);
+                    }
+                }
+            });
+        }
+    </script>
+
+    <body>
+        <fieldset>
+            <legend>Import Data</legend>
+            <div id="import-complete" class="ui-helper-hidden">
+                Import has finished succesfully.
+                <button id="import-file-button-close" onclick="closeWindow()">Close</button>
+            </div>
+
+            <div id="import-dialog>">
+                <form id="import-form" enctype="multipart/form-data">
+                    <div>
+                        <label for="base-path">Base Path </label>
+                        <input type="text" name="base-path" id="base-path" value="/" required="" />
+                    </div>
+                    <div>
+                        <label for="overwrite">Override </label>
+                        <select name="overwrite" id="overwrite">
+                            <option>true</option>
+                            <option>false</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="import-file">Select File </label>
+                        <input type="file" id="import-file" name="import-file" size="40" required/>
+                        <br clear="all"/>
+                    </div>
+
+                    <div id="error-response" class="ui-helper-hidden">
+                        An error has occurred: <span id="error-text"></span>
+                    </div>
+
+                    <div id="import-help">
+                        Select the file containing the import JSON you wish to import.
+                        This file should be in the format:
+                        <pre id="codeblock">
+[
+    {
+      "path": "/path",
+      "data": "base64encodedbytes",
+      "acls": [{"scheme": "scheme", "id": "id", "perms": 31}]
+    },
+    ...
+]
+                        </pre>
+                   </div>
+                    <button id="import-file-button-cancel" onclick="closeWindow()">Cancel</button>
+                    <button id="import-file-button-submit" type="button" onclick="submitForm()">Import</button>
+                </form>
+            </div>
+
+        </fieldset>
+   </body>
+</html>

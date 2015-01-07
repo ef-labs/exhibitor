@@ -27,6 +27,7 @@
 <script type="text/javascript">
     var URL_EXPLORER_ANALYZE = "../explorer/analyze";
     var URL_EXPLORER_USAGE_LISTING = "../explorer/usage-listing";
+    var URL_EXPLORER_EXPORT = "../explorer/export";
 
     $(function (){
         var queryTab = getQuery();
@@ -40,6 +41,10 @@
             else if ( queryTab["method"] === "usage-listing" )
             {
                 url = URL_EXPLORER_USAGE_LISTING;
+            }
+            else if ( queryTab["method"] == "export" )
+            {
+                url = URL_EXPLORER_EXPORT;
             }
             else
             {
