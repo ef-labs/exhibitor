@@ -18,6 +18,7 @@ package com.netflix.exhibitor.core.config;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import java.util.Arrays;
@@ -176,7 +177,11 @@ public class PropertyBasedInstanceConfig extends ConfigCollectionBase
         public String getString(StringConfigs config)
         {
             String  propertyName = toName(config, prefix);
-            return properties.getProperty(propertyName, defaults.getProperty(propertyName, ""));
+            
+            //TODO: Need to establish why some properties are in the main properties list with "" values. For now this fixes the issue.
+            String mainPropertyResult = properties.getProperty(propertyName);
+
+            return (!Strings.isNullOrEmpty(mainPropertyResult)) ? mainPropertyResult : defaults.getProperty(propertyName, "");
         }
 
         @Override
