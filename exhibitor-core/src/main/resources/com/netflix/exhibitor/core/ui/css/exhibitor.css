@@ -593,7 +593,7 @@ fieldset
 
 #node-data
 {
-    resize: none;
+    /*resize: none;*/
 }
 
 .optional

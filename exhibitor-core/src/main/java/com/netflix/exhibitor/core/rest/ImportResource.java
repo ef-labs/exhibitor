@@ -60,7 +60,7 @@ public class ImportResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response doImportFormParams(@FormDataParam("import-file") InputStream file
             , @FormDataParam("base-path") String basePath
-            , @FormDataParam("overwrite") String overwrite) throws Exception
+            , @FormDataParam("overwrite") Boolean overwrite) throws Exception
     {
         ObjectMapper mapper = new ObjectMapper();
         final JsonNode tree = mapper.readTree(mapper.getJsonFactory().createJsonParser(file));

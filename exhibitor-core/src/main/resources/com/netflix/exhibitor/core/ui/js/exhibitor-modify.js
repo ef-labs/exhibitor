@@ -30,7 +30,36 @@ function completeModifyDialog(localPath, isUpdate, userName, ticketNumber, reaso
         {
             if ( data.succeeded )
             {
-                $("#tree").dynatree("getTree").reload();
+                // Refresh the relevant portion of the tree
+                var tree = $("#tree").dynatree("getTree");
+                var currNode = tree.getNodeByKey(localPath);
+                if (isUpdate) {
+                    var parentNode;
+                    if (currNode) {
+                        parentNode = currNode.getParent();
+                    } else {
+                        // Check if the parent is visible
+                        var i = localPath.lastIndexOf("/")
+                        if (i > 0) {
+                            parentNode = tree.getNodeByKey(localPath.substring(0, i));
+                        }
+                    }
+                    if (parentNode) {
+                        parentNode.reloadChildren(function(node, isOk) {
+                            if (isOk) {
+                                var n = tree.getNodeByKey(localPath);
+                                if (n) n.activate();
+                            }
+                        });
+                    }
+                } else {
+                    if (currNode) {
+                        if (tree.getActiveNode() === currNode) {
+                            currNode.getParent().activate();
+                        }
+                        currNode.remove();
+                    }
+                }
                 messageDialog("Success", "The change has been made.");
             }
             else
@@ -79,6 +108,12 @@ function continueModifyDialog()
 
 function openModifyDialog(action, path, data, dataType, acls)
 {
+    // default to data type string
+    if (dataType === 'binary') {
+        dataType = 'string';
+        data = fromBinary(data);
+    }
+
     if (systemConfig.enableAcls == 1) {
         $nodeaclstable = $('#node-acls-table');
         $nodeaclstable.removeClass('ui-helper-hidden');
@@ -272,7 +307,7 @@ function initModifyUi()
     $("#get-node-data-dialog").dialog({
         modal: true,
         autoOpen: false,
-        width: 590,
+        width: 750,
         resizable: false,
         title: 'Modify Node'
     });
